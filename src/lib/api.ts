@@ -1,5 +1,6 @@
 import { supabase } from './supabase'
 import { embedImage } from './embed'
+import { compressImage } from './image'
 import type { Item, ItemDraft, PendingPhoto, SearchHit } from '../types'
 
 const BUCKET = 'photos'
@@ -57,7 +58,8 @@ export async function searchText(q: string): Promise<SearchHit[]> {
 }
 
 export async function searchImage(blob: Blob): Promise<SearchHit[]> {
-  const embedding = await embedImage(blob)
+  // Ré-encodée ici pour que le moteur photo reçoive toujours une image qu'il sait lire.
+  const embedding = await embedImage(await compressImage(blob))
   const ranked = check(
     await supabase.rpc('search_items_image', { query: JSON.stringify(embedding), max_results: 12 }),
   ) as { item_id: string; similarity: number }[]

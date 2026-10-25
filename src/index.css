@@ -237,12 +237,6 @@ h2 {
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 12px;
 }
-@media (max-width: 520px) {
-  .grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-  }
-}
 
 .item-card {
   overflow: hidden;
@@ -291,16 +285,17 @@ h2 {
   gap: 2px;
 }
 .brand {
-  font-size: 0.8rem;
-  font-weight: 700;
+  font-size: 0.85rem;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--muted);
+  letter-spacing: 0.03em;
+  color: var(--accent);
 }
 .model {
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.05rem;
   line-height: 1.25;
+  color: var(--text);
 }
 .max-buy {
   display: flex;
@@ -550,15 +545,43 @@ textarea:focus {
   pointer-events: none;
 }
 
+/* Téléphone : fiches en liste, photo à gauche, texte large et lisible. */
 @media (max-width: 520px) {
-  .max-buy {
-    padding: 6px 8px;
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
-  .max-buy span {
-    font-size: 0.72rem;
+  .item-card {
+    flex-direction: row;
+  }
+  .item-card .thumb {
+    flex: none;
+    width: 112px;
+    aspect-ratio: auto;
+    min-height: 112px;
+  }
+  .item-card .badge {
+    left: 4px;
+    top: 4px;
+    font-size: 0.68rem;
+    padding: 2px 6px;
+  }
+  .item-body {
+    flex: 1;
+    min-width: 0;
+    padding: 10px 12px;
+  }
+  .item-card .brand {
+    font-size: 0.85rem;
+  }
+  .item-card .model {
+    font-size: 1.1rem;
+  }
+  .max-buy {
+    padding: 5px 10px;
   }
   .max-buy strong {
-    font-size: 1.05rem;
+    font-size: 1.2rem;
   }
 }
 
@@ -575,4 +598,19 @@ textarea:focus {
 
 .max-buy.big span {
   font-size: 0.9rem;
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 30;
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: var(--text);
+  color: var(--bg);
+  font-weight: 600;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  white-space: nowrap;
 }

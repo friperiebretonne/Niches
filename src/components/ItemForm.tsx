@@ -6,7 +6,7 @@ import { warmUp } from '../lib/embed'
 import { formatPrice, maxBuyPrice } from '../lib/format'
 import { takeHandedOffPhoto } from '../lib/handoff'
 import { compressImage, imagesFromDataTransfer } from '../lib/image'
-import { goBack, navigate } from '../lib/router'
+import { goBack } from '../lib/router'
 import { usePhotoUrls } from '../lib/usePhotoUrls'
 
 const parsePrice = (s: string) => {
@@ -15,7 +15,7 @@ const parsePrice = (s: string) => {
 }
 const priceToString = (n: number | null) => (n == null ? '' : String(n).replace('.', ','))
 
-export function ItemForm({ id, onSaved }: { id?: string; onSaved: () => void }) {
+export function ItemForm({ id, onSaved }: { id?: string; onSaved: (id: string) => void }) {
   const [existing, setExisting] = useState<Item | null>(null)
   const [brand, setBrand] = useState('')
   const [model, setModel] = useState('')
@@ -53,7 +53,13 @@ export function ItemForm({ id, onSaved }: { id?: string; onSaved: () => void }) 
   }, [id])
 
   async function addPhotos(files: Blob[]) {
-    const compressed = await Promise.all(files.map(compressImage))
+    let compressed: Blob[]
+    try {
+      compressed = await Promise.all(files.map(compressImage))
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err))
+      return
+    }
     setPending((old) => [
       ...old,
       ...compressed.map((blob) => ({ key: crypto.randomUUID(), blob, previewUrl: URL.createObjectURL(blob) })),
@@ -115,10 +121,9 @@ export function ItemForm({ id, onSaved }: { id?: string; onSaved: () => void }) 
         },
       )
       pending.forEach((p) => URL.revokeObjectURL(p.previewUrl))
-      onSaved()
-      // Remplace la page du formulaire pour que « Retour » ne revienne pas dessus.
-      window.history.replaceState(null, '', `#/fiche/${savedId}`)
-      navigate({ name: 'detail', id: savedId })
+      onSaved(savedId)
+      // Retour à l'accueil, en remplaçant le formulaire dans l'historique.
+      window.location.replace('#/')
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err))
       setSaving(false)

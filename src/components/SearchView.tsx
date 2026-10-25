@@ -78,6 +78,11 @@ export function SearchView({ active, refreshKey }: { active: boolean; refreshKey
     [runSearch],
   )
 
+  // Après l'ajout ou la modification d'une fiche, relance la recherche photo en cours.
+  useEffect(() => {
+    if (photo && refreshKey > 0) runSearch(() => searchImage(photo.blob))
+  }, [refreshKey])
+
   const clearPhoto = () => {
     requestId.current++
     if (photo) URL.revokeObjectURL(photo.url)

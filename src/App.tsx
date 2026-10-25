@@ -12,6 +12,7 @@ import { Settings } from './components/Settings'
 export default function App() {
   const [session, setSession] = useState<Session | null | undefined>(undefined)
   const [refreshKey, setRefreshKey] = useState(0)
+  const [notice, setNotice] = useState<{ text: string; id: string } | null>(null)
   const route = useRoute()
 
   useEffect(() => {
@@ -26,6 +27,12 @@ export default function App() {
     if (session) warmUp().catch(() => {})
   }, [session])
 
+  useEffect(() => {
+    if (!notice) return
+    const t = setTimeout(() => setNotice(null), 4000)
+    return () => clearTimeout(t)
+  }, [notice])
+
   if (!isConfigured)
     return (
       <main className="page">
@@ -38,14 +45,23 @@ export default function App() {
   if (!session) return <Login />
 
   const refresh = () => setRefreshKey((k) => k + 1)
+  const saved = (id: string) => {
+    refresh()
+    setNotice({ text: 'Fiche enregistrée', id })
+  }
 
   return (
     <>
       <SearchView active={route.name === 'search'} refreshKey={refreshKey} />
       {route.name === 'detail' && <ItemDetail key={route.id} id={route.id} onChanged={refresh} />}
-      {route.name === 'new' && <ItemForm key="new" onSaved={refresh} />}
-      {route.name === 'edit' && <ItemForm key={route.id} id={route.id} onSaved={refresh} />}
+      {route.name === 'new' && <ItemForm key="new" onSaved={saved} />}
+      {route.name === 'edit' && <ItemForm key={route.id} id={route.id} onSaved={saved} />}
       {route.name === 'settings' && <Settings />}
+      {notice && (
+        <a className="toast" href={`#/fiche/${notice.id}`} onClick={() => setNotice(null)}>
+          ✓ {notice.text} · <u>Voir</u>
+        </a>
+      )}
     </>
   )
 }
