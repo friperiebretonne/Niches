@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { GENDER_LABELS } from '../types'
 import type { Item } from '../types'
 import { deleteItem, getItem } from '../lib/api'
 import { formatPrice, maxBuyPrice } from '../lib/format'
@@ -56,7 +57,10 @@ export function ItemDetail({ id, onChanged }: { id: string; onChanged: () => voi
       )}
 
       <section className="detail-info">
-        <div className="brand">{item.brand}</div>
+        <div className="brand">
+          {item.brand}
+          {item.gender && <span className="gender-tag">{GENDER_LABELS[item.gender]}</span>}
+        </div>
         <h1 className="model">{item.model}</h1>
 
         <div className="price-panel">

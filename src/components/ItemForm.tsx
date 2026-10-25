@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
-import type { Item, PendingPhoto } from '../types'
+import { GENDER_LABELS } from '../types'
+import type { Gender, Item, PendingPhoto } from '../types'
+import { BrandInput } from './BrandInput'
 import { getItem, listBrands, saveItem } from '../lib/api'
 import { warmUp } from '../lib/embed'
 import { formatPrice, maxBuyPrice } from '../lib/format'
@@ -23,6 +25,7 @@ export function ItemForm({ id, onSaved }: { id?: string; onSaved: (id: string) =
   const [resalePrice, setResalePrice] = useState('')
   const [material, setMaterial] = useState('')
   const [madeIn, setMadeIn] = useState('')
+  const [gender, setGender] = useState<Gender | null>(null)
   const [notes, setNotes] = useState('')
   const [pending, setPending] = useState<PendingPhoto[]>([])
   const [removedIds, setRemovedIds] = useState<string[]>([])
@@ -48,6 +51,7 @@ export function ItemForm({ id, onSaved }: { id?: string; onSaved: (id: string) =
       setResalePrice(priceToString(item.resale_price))
       setMaterial(item.material ?? '')
       setMadeIn(item.made_in ?? '')
+      setGender(item.gender)
       setNotes(item.notes ?? '')
     })
   }, [id])
@@ -97,6 +101,10 @@ export function ItemForm({ id, onSaved }: { id?: string; onSaved: (id: string) =
 
   async function submit(e: FormEvent) {
     e.preventDefault()
+    if (!gender) {
+      setError('Choisissez Homme, Femme ou Unisexe.')
+      return
+    }
     if (resale == null || resale <= 0) {
       setError('Indiquez le prix de revente en très bon état.')
       return
@@ -112,6 +120,7 @@ export function ItemForm({ id, onSaved }: { id?: string; onSaved: (id: string) =
           resale_price: resale,
           material: material.trim() || null,
           made_in: madeIn.trim() || null,
+          gender,
           notes: notes.trim() || null,
         },
         {
@@ -179,15 +188,28 @@ export function ItemForm({ id, onSaved }: { id?: string; onSaved: (id: string) =
         </section>
         <p className="hint muted">Plusieurs photos sous différents angles améliorent la recherche. Collage (Ctrl+V) accepté.</p>
 
+        <div className="field">
+          <span className="field-label">Sexe *</span>
+          <div className="segmented" role="radiogroup">
+            {(Object.keys(GENDER_LABELS) as Gender[]).map((g) => (
+              <button
+                key={g}
+                type="button"
+                role="radio"
+                aria-checked={gender === g}
+                className={gender === g ? 'active' : ''}
+                onClick={() => setGender(g)}
+              >
+                {GENDER_LABELS[g]}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div className="form-grid">
           <label>
             Marque *
-            <input value={brand} onChange={(e) => setBrand(e.target.value)} list="brands" required />
-            <datalist id="brands">
-              {brands.map((b) => (
-                <option key={b} value={b} />
-              ))}
-            </datalist>
+            <BrandInput value={brand} onChange={setBrand} brands={brands} />
           </label>
           <label>
             Modèle *
@@ -205,11 +227,11 @@ export function ItemForm({ id, onSaved }: { id?: string; onSaved: (id: string) =
 
         <div className="max-buy-pair">
           <div className="max-buy big">
-            <span>Achat max TBE (revente ÷ 2,2)</span>
+            <span>Achat max TBE</span>
             <strong>{resale ? formatPrice(maxBuyPrice(resale)) : '–'}</strong>
           </div>
           <div className="max-buy big">
-            <span>Achat max neuf (prix neuf ÷ 2,2)</span>
+            <span>Achat max neuf</span>
             <strong>{newP ? formatPrice(maxBuyPrice(newP)) : '–'}</strong>
           </div>
         </div>

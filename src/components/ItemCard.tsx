@@ -1,3 +1,4 @@
+import { GENDER_LABELS } from '../types'
 import type { SearchHit } from '../types'
 import { formatPrice, maxBuyPrice, similarityLabel } from '../lib/format'
 import { hrefFor } from '../lib/router'
@@ -16,7 +17,10 @@ export function ItemCard({ hit, photoUrl }: { hit: SearchHit; photoUrl?: string 
         )}
       </div>
       <div className="item-body">
-        <div className="brand">{item.brand}</div>
+        <div className="brand">
+          {item.brand}
+          {item.gender && <span className="gender-tag">{GENDER_LABELS[item.gender]}</span>}
+        </div>
         <div className="model">{item.model}</div>
         <div className="max-buy-pair">
           <div className="max-buy">

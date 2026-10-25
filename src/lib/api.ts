@@ -5,7 +5,7 @@ import type { Item, ItemDraft, PendingPhoto, SearchHit } from '../types'
 
 const BUCKET = 'photos'
 const ITEM_COLUMNS =
-  'id,brand,model,new_price,resale_price,max_buy_price,material,made_in,notes,created_at,updated_at,item_photos(id,item_id,path,position)'
+  'id,brand,model,new_price,resale_price,max_buy_price,material,made_in,gender,notes,created_at,updated_at,item_photos(id,item_id,path,position)'
 
 function normalize(row: Item): Item {
   return {

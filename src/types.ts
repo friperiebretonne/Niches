@@ -1,3 +1,7 @@
+export type Gender = 'homme' | 'femme' | 'unisexe'
+
+export const GENDER_LABELS: Record<Gender, string> = { homme: 'Homme', femme: 'Femme', unisexe: 'Unisexe' }
+
 export interface Photo {
   id: string
   item_id: string
@@ -14,6 +18,7 @@ export interface Item {
   max_buy_price: number
   material: string | null
   made_in: string | null
+  gender: Gender | null
   notes: string | null
   created_at: string
   updated_at: string
@@ -27,6 +32,7 @@ export interface ItemDraft {
   resale_price: number
   material: string | null
   made_in: string | null
+  gender: Gender | null
   notes: string | null
 }
 

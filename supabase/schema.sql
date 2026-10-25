@@ -26,10 +26,11 @@ create table if not exists public.items (
   max_buy_price numeric(10, 2) generated always as (round(resale_price / 2.2, 2)) stored,
   material text,
   made_in text,
+  gender text check (gender in ('homme', 'femme', 'unisexe')),
   notes text,
   search_text text generated always as (
     lower(public.f_unaccent(
-      brand || ' ' || model || ' ' ||
+      brand || ' ' || model || ' ' || coalesce(gender, '') || ' ' ||
       coalesce(material, '') || ' ' || coalesce(made_in, '') || ' ' || coalesce(notes, '')
     ))
   ) stored,
