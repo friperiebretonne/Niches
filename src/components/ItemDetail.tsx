@@ -61,12 +61,12 @@ export function ItemDetail({ id, onChanged }: { id: string; onChanged: () => voi
 
         <div className="price-panel">
           <div className="max-buy big">
-            <span>Achat max neuf</span>
-            <strong>{item.new_price != null ? formatPrice(maxBuyPrice(item.new_price)) : '–'}</strong>
-          </div>
-          <div className="max-buy big">
             <span>Achat max très bon état</span>
             <strong>{formatPrice(item.max_buy_price)}</strong>
+          </div>
+          <div className="max-buy big">
+            <span>Achat max neuf</span>
+            <strong>{item.new_price != null ? formatPrice(maxBuyPrice(item.new_price)) : '–'}</strong>
           </div>
           <div className="price-row">
             <span>Revente très bon état</span>

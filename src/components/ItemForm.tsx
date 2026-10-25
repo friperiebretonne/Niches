@@ -194,23 +194,23 @@ export function ItemForm({ id, onSaved }: { id?: string; onSaved: (id: string) =
             <input value={model} onChange={(e) => setModel(e.target.value)} required />
           </label>
           <label>
-            Prix neuf (€)
-            <input value={newPrice} onChange={(e) => setNewPrice(e.target.value)} inputMode="decimal" />
-          </label>
-          <label>
             Revente très bon état (€) *
             <input value={resalePrice} onChange={(e) => setResalePrice(e.target.value)} inputMode="decimal" required />
+          </label>
+          <label>
+            Prix neuf (€)
+            <input value={newPrice} onChange={(e) => setNewPrice(e.target.value)} inputMode="decimal" />
           </label>
         </div>
 
         <div className="max-buy-pair">
           <div className="max-buy big">
-            <span>Achat max neuf (prix neuf ÷ 2,2)</span>
-            <strong>{newP ? formatPrice(maxBuyPrice(newP)) : '–'}</strong>
-          </div>
-          <div className="max-buy big">
             <span>Achat max TBE (revente ÷ 2,2)</span>
             <strong>{resale ? formatPrice(maxBuyPrice(resale)) : '–'}</strong>
+          </div>
+          <div className="max-buy big">
+            <span>Achat max neuf (prix neuf ÷ 2,2)</span>
+            <strong>{newP ? formatPrice(maxBuyPrice(newP)) : '–'}</strong>
           </div>
         </div>
 

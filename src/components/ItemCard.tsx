@@ -20,12 +20,12 @@ export function ItemCard({ hit, photoUrl }: { hit: SearchHit; photoUrl?: string 
         <div className="model">{item.model}</div>
         <div className="max-buy-pair">
           <div className="max-buy">
-            <span>Achat max neuf</span>
-            <strong>{item.new_price != null ? formatPrice(maxBuyPrice(item.new_price)) : '–'}</strong>
-          </div>
-          <div className="max-buy">
             <span>Achat max TBE</span>
             <strong>{formatPrice(item.max_buy_price)}</strong>
+          </div>
+          <div className="max-buy">
+            <span>Achat max neuf</span>
+            <strong>{item.new_price != null ? formatPrice(maxBuyPrice(item.new_price)) : '–'}</strong>
           </div>
         </div>
         <div className="prices">
