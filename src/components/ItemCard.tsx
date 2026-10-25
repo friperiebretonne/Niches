@@ -1,5 +1,5 @@
 import type { SearchHit } from '../types'
-import { formatPrice, similarityLabel } from '../lib/format'
+import { formatPrice, maxBuyPrice, similarityLabel } from '../lib/format'
 import { hrefFor } from '../lib/router'
 
 export function ItemCard({ hit, photoUrl }: { hit: SearchHit; photoUrl?: string }) {
@@ -18,9 +18,15 @@ export function ItemCard({ hit, photoUrl }: { hit: SearchHit; photoUrl?: string 
       <div className="item-body">
         <div className="brand">{item.brand}</div>
         <div className="model">{item.model}</div>
-        <div className="max-buy">
-          <span>Achat max</span>
-          <strong>{formatPrice(item.max_buy_price)}</strong>
+        <div className="max-buy-pair">
+          <div className="max-buy">
+            <span>Achat max neuf</span>
+            <strong>{item.new_price != null ? formatPrice(maxBuyPrice(item.new_price)) : '–'}</strong>
+          </div>
+          <div className="max-buy">
+            <span>Achat max TBE</span>
+            <strong>{formatPrice(item.max_buy_price)}</strong>
+          </div>
         </div>
         <div className="prices">
           <span>Revente TBE {formatPrice(item.resale_price)}</span>

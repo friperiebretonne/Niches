@@ -614,3 +614,45 @@ textarea:focus {
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
   white-space: nowrap;
 }
+
+.max-buy-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-top: 8px;
+}
+.max-buy-pair .max-buy {
+  margin-top: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+}
+.max-buy-pair .max-buy.big {
+  flex-direction: row;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+@media (max-width: 520px) {
+  .max-buy-pair .max-buy.big {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .max-buy-pair .max-buy.big strong {
+    font-size: 1.5rem;
+  }
+}
+
+.max-buy-pair {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+@media (max-width: 520px) {
+  .item-card .max-buy-pair .max-buy {
+    padding: 5px 8px;
+  }
+  .item-card .max-buy-pair .max-buy span {
+    font-size: 0.68rem;
+  }
+  .item-card .max-buy-pair .max-buy strong {
+    font-size: 1.1rem;
+  }
+}

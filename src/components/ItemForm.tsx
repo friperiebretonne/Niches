@@ -93,6 +93,7 @@ export function ItemForm({ id, onSaved }: { id?: string; onSaved: (id: string) =
   }, [])
 
   const resale = parsePrice(resalePrice)
+  const newP = parsePrice(newPrice)
 
   async function submit(e: FormEvent) {
     e.preventDefault()
@@ -202,9 +203,15 @@ export function ItemForm({ id, onSaved }: { id?: string; onSaved: (id: string) =
           </label>
         </div>
 
-        <div className="max-buy big">
-          <span>Prix d'achat max (revente ÷ 2,2)</span>
-          <strong>{resale ? formatPrice(maxBuyPrice(resale)) : '–'}</strong>
+        <div className="max-buy-pair">
+          <div className="max-buy big">
+            <span>Achat max neuf (prix neuf ÷ 2,2)</span>
+            <strong>{newP ? formatPrice(maxBuyPrice(newP)) : '–'}</strong>
+          </div>
+          <div className="max-buy big">
+            <span>Achat max TBE (revente ÷ 2,2)</span>
+            <strong>{resale ? formatPrice(maxBuyPrice(resale)) : '–'}</strong>
+          </div>
         </div>
 
         <div className="form-grid">

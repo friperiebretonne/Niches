@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { Item } from '../types'
 import { deleteItem, getItem } from '../lib/api'
-import { formatPrice } from '../lib/format'
+import { formatPrice, maxBuyPrice } from '../lib/format'
 import { goBack, hrefFor, navigate } from '../lib/router'
 import { usePhotoUrls } from '../lib/usePhotoUrls'
 
@@ -61,7 +61,11 @@ export function ItemDetail({ id, onChanged }: { id: string; onChanged: () => voi
 
         <div className="price-panel">
           <div className="max-buy big">
-            <span>Prix d'achat max</span>
+            <span>Achat max neuf</span>
+            <strong>{item.new_price != null ? formatPrice(maxBuyPrice(item.new_price)) : '–'}</strong>
+          </div>
+          <div className="max-buy big">
+            <span>Achat max très bon état</span>
             <strong>{formatPrice(item.max_buy_price)}</strong>
           </div>
           <div className="price-row">
